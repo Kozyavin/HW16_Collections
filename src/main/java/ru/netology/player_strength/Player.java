@@ -1,4 +1,5 @@
 package ru.netology.player_strength;
+
 public class Player {
 
     int id;
