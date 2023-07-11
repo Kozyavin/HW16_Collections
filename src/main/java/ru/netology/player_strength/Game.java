@@ -1,30 +1,30 @@
 package ru.netology.player_strength;
-import java.util.ArrayList;
-import java.util.List;
+
+import java.util.HashMap;
 
 
 public class Game {
-    List<Player> players = new ArrayList<>();
+    HashMap<String, Player> players = new HashMap<>();      ///создаём словарь.ключём будет - имя каждого игрока, значение - игроки с их полями
 
-    public void register(Player player) {                   /////метод регистрации в списке игроков
-        players.add(player);
+    public void register(Player player) {                   /////метод регистрации в справочнике игроков
+        players.put(player.name, player);         ///ключём  - имя каждого игрока, берётся у объекта класса Player - игроков
 
     }
 
-    public int round(String playerName1, String playerName2) {
+    public int round(String playerName1, String playerName2) { //метод сравнения силы
 
         Player player1 = null;
         Player player2 = null;
 
-        for (Player name : players) {
-            if (name.getName().equals(playerName1)) {
-                player1 = name;
+        for (String key : players.keySet()) {   //пробегаемся по ключам, соответствующие именам игроков
+            if (key.equals(playerName1)) {      //если есть совпадение вводимого имени с ключами строк в словаре, то
+                player1 = players.get(key);
             }
-            if (name.getName().equals(playerName2)) {
-                player2 = name;
+            if (key.equals(playerName2)) {
+                player2 = players.get(key);
             }
         }
-
+        //обработка ошибок при отсутствии/не зарегестрирован в справочнике
         if (player1 == null) {
             throw new NotRegisteredException("Игрок с именем " + playerName1 + " не зарегестрирован");
         }
@@ -32,7 +32,7 @@ public class Game {
             throw new NotRegisteredException("Игрок с именем " + playerName2 + " не зарегестрирован");
         }
 
-
+        //сравнение силы 2-х игроков
         if (player1.getStrength() > player2.getStrength()) {
             return 1;
         } else if (player1.getStrength() < player2.getStrength()) {
@@ -41,28 +41,6 @@ public class Game {
         return 0;
     }
 
+
 }
 
-
-
-
-
-
-
-
-
-
-
-
-/*
-
-     public int round(String playerName1, String playerName2, Comparator<Player> comparator) {
-        for (Player name : players) {
-            if ((playerName1 != name.getName()) && (playerName2 != name.getName())){
-                throw new NotRegisteredException("Игрок с именем " + playerName1 + " не зарегестрирован");
-            }
-        }
-        Collections.sort(players, comparator);
-        return comparator;
-    }
-    */
